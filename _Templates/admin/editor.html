@@ -1,0 +1,124 @@
+{% extends 'admin/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}
+News - Publish News
+{% endblock %}
+
+{% block head %}
+<!-- Simple Markdown CSS import !REQUIRED -->
+<style>
+
+#root {
+    position: relative;
+    left: 10%;
+    width: 80%;
+    margin-top: 50px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.editor-component {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+#title-input {
+    width: 100%;
+    padding: 10px 5px 10px 15px;
+    font-size: 1.5em;
+}
+
+#markdown-editor-cont {
+    width: 96%;
+    margin-left: 2%;
+}
+
+#publish-button {
+    padding: 10px 30px 10px 30px;
+    background-color: #182C61;
+    border-radius: 4px;
+    width: max-content;
+    color: white;
+    cursor: pointer;
+}
+
+</style>
+<link type="text/css" rel="stylesheet" href='{% static "public/css/simplemde.min.css" %}' />
+{% endblock %}
+
+{% block body %}
+
+<div id="root">
+    <input placeholder="Title goes here..." class="editor-component" id="title-input" />
+    <div id="markdown-editor-cont"  class="editor-component">
+        <textarea placeholder="Start writing content..." id="markdown-editor"></textarea>
+    <div/>
+    <div id="publish-button"  class="editor-component" onclick="postNews()">Publish!</div>
+</div>
+<!-- Simple Markdown JS import !REQUIRED -->
+<script type="text/javascript" src="{% static 'public/libs/simplemde.min.js' %}"></script>
+<script type="text/javascript">
+    const markdown_editor = new SimpleMDE({ element: document.getElementById("markdown-editor")});
+
+    // Check session storage
+    window.onload = () => {
+        
+        var title = sessionStorage.getItem('title');
+        var content = sessionStorage.getItem('content');
+        
+        if(title != null) document.getElementById('title-input').value = title;
+        if(content != null) markdown_editor.value(content);
+        
+        // Clear previous data and save data every 30 seconds
+        window.setTimeout(()=>{
+            sessionStorage.setItem('title', null);
+            sessionStorage.setItem('content', null);
+
+            window.setInterval(() => {
+                
+                var title = document.getElementById('title-input').value.trim();
+                var content = markdown_editor.value().trim();
+                
+                title != "" ? sessionStorage.setItem('title', title) : sessionStorage.removeItem('title');
+                content != "" ? sessionStorage.setItem('content', content) : sessionStorage.removeItem('content');
+                
+                console.log('Data Saved!', title, content);
+
+            }, 30000);
+        }, 30000);
+    };
+
+
+    function postNews() {
+        var form = document.createElement("form");
+        form.style.display = 'none';
+        form.action = "/admin/new_post/";
+        form.method = "post";
+        
+        var title = document.createElement("input");
+        title.name = "title";
+        title.value = document.getElementById("title-input").value;
+        form.appendChild(title);
+
+        var content = document.createElement("textarea");
+        content.name = "content";
+        content.value = markdown_editor.value();
+        form.appendChild(content);
+
+        document.body.appendChild(form);
+
+        sessionStorage.removeItem('title');
+        sessionStorage.removeItem('content');
+    
+        form.submit();
+
+        // Clear session storage
+    }
+</script>
+
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

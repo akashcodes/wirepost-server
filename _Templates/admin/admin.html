@@ -1,0 +1,42 @@
+{% extends 'admin/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}
+News - Publish News
+{% endblock %}
+
+{% block head %}
+<!-- Simple Markdown CSS import !REQUIRED -->
+<style>
+
+</style>
+{% endblock %}
+
+{% block body %}
+
+<h1><u>Admin Panel</u></h1>
+
+<br/>
+
+<h2>-- Create Post</h2>
+
+<a href="/admin/new_post/">Click Here to Write a new Post</a>
+
+<br/><br/>
+
+<h2>-- Manage Feed</h2>
+
+<br/><br/>
+
+<h4><a href="/admin/manage_post/?page=1">Manage posts</a></h4>
+
+<br/><br/>
+
+<h4><a href="/admin/manage_account/">Manage Accounts</a></h4>
+<br/><br/>
+
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

@@ -1,0 +1,44 @@
+
+#root {
+    position: relative;
+    width: 80%;
+    left: 100px;
+    top: 80px;
+}
+
+#content-editor {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    padding: 10px;
+    background-color: #e6e6e6;
+}
+
+#tool-box {
+    float: right;
+    background-color: red;
+    content: "YO!";
+}
+
+.text-box {
+    margin-bottom: 30px;
+}   
+
+#title.text-box {
+    font-size: 2.5em;
+}
+
+.text-box:empty:not(:focus)::before {
+    content: attr(data-placeholder);
+    color: gray;
+}
+
+#add-para-button {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background-color: blue;
+    border-radius: 100%;
+    transform: translateX(-70%);
+    cursor: pointer;
+}

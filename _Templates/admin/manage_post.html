@@ -1,0 +1,28 @@
+{% extends 'admin/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}
+Manage Posts
+{% endblock %}
+
+{% block head %}
+<!-- Simple Markdown CSS import !REQUIRED -->
+<style>
+
+</style>
+{% endblock %}
+
+{% block body %}
+
+{% for post in posts %}
+<h1>{{post.title}}</h1>
+<p>{{post.content|safe}}</p>
+<form method="POST" action="/admin/manage_post/delete">
+  <input type="hidden" name="post_id" value="{{post.id}}" />
+  <input type="submit" value="Delete" />
+<form>
+<br/><br/><br/>
+{% endfor %}
+
+{% endblock %}
